@@ -27,5 +27,5 @@ SpacesInParentheses: false
 SpacesInAngles: false
 SpaceBeforeAssignmentOperators: true
 MaxEmptyLinesToKeep: 1
-SpaceBeforeParens: Always
+SpaceBeforeParens: Never
 NamespaceIndentation: None

@@ -10,49 +10,49 @@ constexpr std::array projectMarkerFiles = {
   ".git",
 };
 
-Optional<File> getRootProjectDirectory (const File& file) {
+Optional<File> getRootProjectDirectory(const File& file) {
   File current = file;
-  while (current != current.getParentDirectory ()) {
-    for (auto& targetFile : projectMarkerFiles) {
-      if (current.getChildFile (targetFile).exists ()) {
+  while(current != current.getParentDirectory()) {
+    for(auto& targetFile : projectMarkerFiles) {
+      if(current.getChildFile(targetFile).exists()) {
         return current;
       }
     }
 
-    current = current.getParentDirectory ();
+    current = current.getParentDirectory();
   }
   return nullopt;
 }
 
-void matchesSnapshot (Component& component, std::string_view name) {
+void matchesSnapshot(Component& component, std::string_view name) {
   auto rootDirectory =
-    *getRootProjectDirectory (File::getCurrentWorkingDirectory ());
+    *getRootProjectDirectory(File::getCurrentWorkingDirectory());
   auto image =
-    component.createComponentSnapshot (component.getBounds (), false, 1.0f);
+    component.createComponentSnapshot(component.getBounds(), false, 1.0f);
 
   // juce Image to file
 
-  const File& filePath = rootDirectory.getChildFile (
-    fmt::format ("./test/visual-regression/current/{}.png", name));
-  filePath.getParentDirectory ().createDirectory ();
-  filePath.deleteFile ();
-  File file (filePath);
-  auto fileOutputStream = file.createOutputStream ();
-  if (fileOutputStream == nullptr)
-    throw std::runtime_error ("Could not create file output stream");
+  const File& filePath = rootDirectory.getChildFile(
+    fmt::format("./test/visual-regression/current/{}.png", name));
+  filePath.getParentDirectory().createDirectory();
+  filePath.deleteFile();
+  File file(filePath);
+  auto fileOutputStream = file.createOutputStream();
+  if(fileOutputStream == nullptr)
+    throw std::runtime_error("Could not create file output stream");
   PNGImageFormat png;
-  png.writeImageToStream (image, *fileOutputStream);
+  png.writeImageToStream(image, *fileOutputStream);
 }
 
-void testComponent (const std::function<void ()>& test) {
-  MessageManager::getInstance ();
+void testComponent(const std::function<void()>& test) {
+  MessageManager::getInstance();
   MessageManagerLock messageManagerLock;
-  assert (messageManagerLock.lockWasGained ());
+  assert(messageManagerLock.lockWasGained());
 
-  test ();
+  test();
 
-  juce::DeletedAtShutdown::deleteAll ();
-  juce::MessageManager::deleteInstance ();
+  juce::DeletedAtShutdown::deleteAll();
+  juce::MessageManager::deleteInstance();
 }
 
 struct Snapshot {
@@ -61,12 +61,12 @@ struct Snapshot {
 
 class SnapshotTester {
 public:
-  SnapshotTester () = default;
+  SnapshotTester() = default;
 
-  Snapshot takeSnapshot (juce::Component& component) {
+  Snapshot takeSnapshot(juce::Component& component) {
     auto image =
-      component.createComponentSnapshot (component.getLocalBounds (), true);
-    Snapshot snapshot = {std::move (image)};
+      component.createComponentSnapshot(component.getLocalBounds(), true);
+    Snapshot snapshot = {std::move(image)};
     return snapshot;
   }
 };

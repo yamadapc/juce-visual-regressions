@@ -2,16 +2,16 @@
 
 #include "SnapshotTester.h"
 
-int main () {
+int main() {
   using namespace juce_visual_regressions;
   using namespace juce;
 
   SnapshotTester tester;
 
-  testComponent ([] () {
-    TextButton component = TextButton ("Hello World");
-    component.setBounds ({0, 0, 100, 100});
-    matchesSnapshot (component, "test");
+  testComponent([]() {
+    TextButton component = TextButton("Hello World");
+    component.setBounds({0, 0, 100, 100});
+    matchesSnapshot(component, "test");
   });
 
   return 0;
