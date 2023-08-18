@@ -10,6 +10,7 @@ juce_add_gui_app(
         StoryBook
         PRODUCT_NAME "BF StoryBook"
         COMPANY_NAME "Pedro Tacla Yamada"
+        BUNDLE_ID "com.beijaflor.juce_storybook"
 )
 
 set_target_properties(
@@ -23,7 +24,7 @@ juce_generate_juce_header(StoryBook)
 target_sources(
         StoryBook
         PRIVATE
-        src/main.cpp
+        src/juce_visual_regressions/main.cpp
 )
 set(
         PRIVATE_DEPENDENCIES

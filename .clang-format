@@ -4,6 +4,7 @@ Standard : Cpp11
 
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: false
+AllowShortLambdasOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
@@ -12,20 +13,19 @@ AllowShortLoopsOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
 
-# JUCE coding conventions http://www.juce.com/documentation/coding-standards
-IndentWidth: 4
-ContinuationIndentWidth: 4
+IndentWidth: 2
+ContinuationIndentWidth: 2
 UseTab: Never
-BreakBeforeBraces: Allman
-IndentCaseLabels: false
-AccessModifierOffset: -4
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
+BreakBeforeBraces: Attach
+IndentCaseLabels: true
+AccessModifierOffset: -2
+PackConstructorInitializers: Never
 ColumnLimit: 80
 PointerBindsToType: true
 
 SpacesInParentheses: false
 SpacesInAngles: false
 SpaceBeforeAssignmentOperators: true
-MaxEmptyLinesToKeep: 2
+MaxEmptyLinesToKeep: 1
 SpaceBeforeParens: Always
 NamespaceIndentation: None
