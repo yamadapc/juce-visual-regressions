@@ -3,12 +3,6 @@ cmake_minimum_required(VERSION 3.14)
 project(juce_visual_regressions VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 
-# if included into another project
-if(NOT TARGET juce::juce_gui_basics)
-add_subdirectory(../../JUCE ${CMAKE_CURRENT_BINARY_DIR}/JUCE)
-add_subdirectory(../../vendor/fmt ${CMAKE_CURRENT_BINARY_DIR}/fmt)
-endif()
-
 juce_add_gui_app(
         TodoList
         PRODUCT_NAME "BF StoryBook - Todo list example"

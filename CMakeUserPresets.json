@@ -1,0 +1,9 @@
+{
+    "version": 4,
+    "vendor": {
+        "conan": {}
+    },
+    "include": [
+        "/Users/yamadapc/projects/juce-visual-regressions/build/Release/generators/CMakePresets.json"
+    ]
+}

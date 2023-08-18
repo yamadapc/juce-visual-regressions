@@ -42,4 +42,4 @@ target_link_libraries(
         ${PUBLIC_DEPENDENCIES}
 )
 
-add_subdirectory(./examples/todo_list)
+# add_subdirectory(./examples/todo_list)
