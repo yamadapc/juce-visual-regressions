@@ -12,7 +12,7 @@ class juce_visual_regressionsRecipe(ConanFile):
     author = "Pedro Tacla Yamada <tacla.yamada@gmail.com>"
     url = "https://github.com/yamadapc/juce-visual-regressions"
     description = "Visual regression testing for JUCE projects"
-    topics = ("<Put some tag here>", "<here>", "<and here>")
+    topics = ()
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
@@ -45,7 +45,7 @@ class juce_visual_regressionsRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake.configure({'CMAKE_EXPORT_COMPILE_COMMANDS': 'ON'})
         cmake.build()
 
     def package(self):
