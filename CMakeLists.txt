@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.14)
 project(juce_visual_regressions VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(JUCE)
-add_subdirectory(vendor/fmt)
+find_package(JUCE)
+find_package(fmt)
 
 juce_add_gui_app(
         StoryBook
@@ -32,7 +32,7 @@ set(
         juce::juce_audio_processors
         juce::juce_dsp
         juce::juce_gui_basics
-        fmt
+        fmt::fmt
 )
 target_link_libraries(
         StoryBook

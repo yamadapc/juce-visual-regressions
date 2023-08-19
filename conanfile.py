@@ -9,15 +9,19 @@ class juce_visual_regressionsRecipe(ConanFile):
 
     # Optional metadata
     license = "<Put the package license here>"
-    author = "<Put your name here> <And your email here>"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of juce_visual_regressions package here>"
+    author = "Pedro Tacla Yamada <tacla.yamada@gmail.com>"
+    url = "https://github.com/yamadapc/juce-visual-regressions"
+    description = "Visual regression testing for JUCE projects"
     topics = ("<Put some tag here>", "<here>", "<and here>")
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
+    requires = [
+        ("juce/7.0.6@juce/release"),
+        ("fmt/10.1.0"),
+    ]
 
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "src/*", "include/*"
@@ -50,8 +54,3 @@ class juce_visual_regressionsRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["juce_visual_regressions"]
-
-    
-
-    
-
