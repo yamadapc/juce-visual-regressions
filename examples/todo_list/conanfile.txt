@@ -1,0 +1,3 @@
+[depends]
+juce_visual_regressions/0.1.0
+juce/7.0.4

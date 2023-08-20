@@ -3,7 +3,6 @@
 //
 
 #include "StorybookApplication.h"
-#include "JuceHeader.h"
 
 namespace juce_visual_regressions {
 
@@ -27,7 +26,7 @@ const String StorybookApplication::getApplicationName() {
 }
 
 const String StorybookApplication::getApplicationVersion() {
-  return ProjectInfo::versionString;
+  return "0.1.0";
 }
 
 void StorybookApplication::initialise(const String& commandLineParameters) {

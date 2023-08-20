@@ -20,8 +20,7 @@
 //
 //   return 0;
 // }
-
-#include "JuceHeader.h"
+// #include "JuceHeader.h"
 #include "storybook/ui/StorybookApplication.h"
 
 START_JUCE_APPLICATION(juce_visual_regressions::StorybookApplication)

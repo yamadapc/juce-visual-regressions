@@ -1,12 +1,6 @@
-#include "juce_visual_regressions.h"
-#include <vector>
-#include <string>
+#include <iostream>
+#include <juce_visual_regressions/juce_visual_regressions.h>
 
 int main() {
-    juce_visual_regressions();
-
-    std::vector<std::string> vec;
-    vec.push_back("test_package");
-
-    juce_visual_regressions_print_vector(vec);
+  std::cout << "Hello, world!" << std::endl;
 }

@@ -1,6 +1,6 @@
 #include "JuceHeader.h"
 
-class TodoListApplication : juce::Application
+class TodoListApplication : juce::JUCEApplication {};
 
 int main() {
   return 0;
