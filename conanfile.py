@@ -22,6 +22,7 @@ class juce_visual_regressionsRecipe(ConanFile):
         ("juce/7.0.6@juce/release"),
         ("fmt/10.1.0"),
     ]
+    generators = "CMakeDeps"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "src/*", "include/*"
@@ -38,8 +39,6 @@ class juce_visual_regressionsRecipe(ConanFile):
         cmake_layout(self)
 
     def generate(self):
-        deps = CMakeDeps(self)
-        deps.generate()
         tc = CMakeToolchain(self)
         tc.generate()
 

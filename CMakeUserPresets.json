@@ -4,6 +4,6 @@
         "conan": {}
     },
     "include": [
-        "/Users/yamadapc/projects/juce-visual-regressions/build/Release/generators/CMakePresets.json"
+        "/Users/yamadapc/projects/juce-visual-regressions/build/Debug/generators/CMakePresets.json"
     ]
 }

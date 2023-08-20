@@ -1,8 +1,7 @@
 {
     "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/",
     "C_Cpp.default.includePath": [
-        "${workspaceFolder}/**",
-        "${workspaceFolder}/JUCE/modules/**",
+        "${workspaceFolder}/**"
     ],
     "cmake.loadCompileCommands": true,
     "C_Cpp.default.compileCommands": "${workspaceFolder}/build/Release/compile_commands.json",
