@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../model/StorybookRegistry.h"
+#include "../../../../../model/StorybookGroup.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 namespace juce_visual_regressions {
@@ -28,22 +28,6 @@ private:
 
   StorybookGroup::Child m_value;
   ValueTree& m_state;
-};
-
-class StorybookSidebar : public Component {
-public:
-  explicit StorybookSidebar(StorybookRegistry& storybookRegistry, ValueTree& state);
-
-  void paint(Graphics& g) override;
-  void resized() override;
-
-private:
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StorybookSidebar)
-
-  StorybookRegistry& m_storybookRegistry;
-  ValueTree& m_state;
-  TreeView m_treeView;
-  TreeViewStoryItem m_rootItem;
 };
 
 } // namespace juce_visual_regressions

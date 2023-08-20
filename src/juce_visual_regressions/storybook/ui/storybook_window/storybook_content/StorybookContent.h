@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "../model/StorybookRegistry.h"
-#include "StorybookSidebar.h"
+#include "../../../model/StorybookRegistry.h"
+#include "./storybook_sidebar/StorybookSidebar.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 namespace juce_visual_regressions {

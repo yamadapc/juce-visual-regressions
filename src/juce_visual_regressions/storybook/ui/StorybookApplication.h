@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "StorybookWindow.h"
+#include "storybook_window/StorybookWindow.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 namespace juce_visual_regressions {
