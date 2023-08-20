@@ -12,6 +12,23 @@ StorybookGroup::StorybookGroup(std::string mName)
     : m_name(std::move(mName)) {
 }
 
+std::optional<std::shared_ptr<StorybookStory>>
+StorybookGroup::getStoryById(int id) {
+  for(auto& child : m_children) {
+    if(auto story = std::get_if<std::shared_ptr<StorybookStory>>(&child)) {
+      if((*story)->getId() == id) {
+        return *story;
+      }
+    } else if(auto group =
+                std::get_if<std::shared_ptr<StorybookGroup>>(&child)) {
+      if(auto story = (*group)->getStoryById(id)) {
+        return story;
+      }
+    }
+  }
+  return std::nullopt;
+}
+
 void StorybookGroup::addGroup(std::shared_ptr<StorybookGroup> group) {
   m_children.emplace_back(group);
 }

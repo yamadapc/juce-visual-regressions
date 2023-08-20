@@ -24,6 +24,7 @@ private:
   void shutdown() override;
 
   StorybookRegistry& m_storybookRegistry;
+  ValueTree m_state;
   std::unique_ptr<StorybookWindow> m_mainWindow;
 };
 

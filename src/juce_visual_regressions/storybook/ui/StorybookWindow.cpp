@@ -8,11 +8,12 @@
 
 namespace juce_visual_regressions {
 
-StorybookWindow::StorybookWindow(StorybookRegistry& storybookRegistry)
+StorybookWindow::StorybookWindow(StorybookRegistry& storybookRegistry,
+                                 ValueTree& state)
     : DocumentWindow("MainWindow", Colours::white, DocumentWindow::allButtons),
       m_storybookRegistry(storybookRegistry),
-      m_storybookContent(m_storybookRegistry) {
-  setSize(500, 500);
+      m_storybookContent(m_storybookRegistry, state) {
+  setSize(800, 500);
   setUsingNativeTitleBar(true);
   setCentrePosition(getParentMonitorArea().getCentre());
   setResizable(true, false);

@@ -12,10 +12,12 @@ class StorybookStory {
 public:
   StorybookStory(std::string name, std::shared_ptr<juce::Component> component);
 
+  const int getId() const;
   const std::string& getName() const;
   const std::shared_ptr<juce::Component>& getComponent() const;
 
 private:
+  int m_id;
   std::string m_name;
   std::shared_ptr<juce::Component> m_component;
 };

@@ -15,11 +15,11 @@ class StorybookRegistry {
 public:
   StorybookRegistry();
 
+  std::optional<std::shared_ptr<StorybookStory>> getStoryById(int id);
   std::shared_ptr<StorybookGroup>& getRootGroup();
+  void shutdown();
 
   static StorybookRegistry& getInstance();
-
-  void shutdown();
 
 private:
   std::shared_ptr<StorybookGroup> m_rootGroup;

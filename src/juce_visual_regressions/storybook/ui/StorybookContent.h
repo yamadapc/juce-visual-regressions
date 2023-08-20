@@ -12,22 +12,20 @@ namespace juce_visual_regressions {
 
 using namespace juce;
 
-class StorybookContent : public Component {
+class StorybookContent : public Component, public ValueTree::Listener {
 public:
-  StorybookContent(StorybookRegistry& storybookRegistry)
-      : m_storybookSidebar(storybookRegistry) {
-    addAndMakeVisible(m_storybookSidebar);
-  }
+  StorybookContent(StorybookRegistry& storybookRegistry, ValueTree& state);
 
-  void resized() override {
-    auto bounds = getLocalBounds();
-    m_storybookSidebar.setBounds(bounds.removeFromLeft(200));
-  }
+  void valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged,
+                                const Identifier& property) override;
+  void resized() override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StorybookContent)
 
   StorybookSidebar m_storybookSidebar;
+  ValueTree m_state;
+  std::shared_ptr<Component> m_storyComponent;
 };
 
 } // namespace juce_visual_regressions

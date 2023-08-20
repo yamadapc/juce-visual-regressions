@@ -13,40 +13,35 @@ using namespace juce;
 
 class TreeViewStoryItem : public TreeViewItem {
 public:
-  TreeViewStoryItem(StorybookGroup::Child value)
-      : m_value(std::move(value)) {
-  }
+  TreeViewStoryItem(StorybookGroup::Child value, ValueTree& state);
 
   bool mightContainSubItems() override;
-  String getUniqueName() const override;
-  void itemOpennessChanged(bool isNowOpen) override;
+  bool canBeSelected() const override;
+  [[nodiscard]] String getUniqueName() const override;
   std::unique_ptr<Component> createItemComponent() override;
+  bool customComponentUsesTreeViewMouseHandler() const override;
+  void itemSelectionChanged(bool isNowSelected) override;
+  void itemOpennessChanged(bool isNowOpen) override;
 
 private:
+  void setupChildren();
+
   StorybookGroup::Child m_value;
+  ValueTree& m_state;
 };
 
 class StorybookSidebar : public Component {
 public:
-  explicit StorybookSidebar(StorybookRegistry& storybookRegistry);
+  explicit StorybookSidebar(StorybookRegistry& storybookRegistry, ValueTree& state);
 
-  void paint(Graphics& g) override {
-    Path path;
-    path.addLineSegment(
-      Line<float>(getWidth() - 1, 0, getWidth() - 1, getHeight()), 1.0f);
-    g.setColour(Colours::grey);
-    g.strokePath(path, PathStrokeType(1.0f));
-  }
-
-  void resized() override {
-    auto bounds = getLocalBounds();
-    m_treeView.setBounds(bounds);
-  }
+  void paint(Graphics& g) override;
+  void resized() override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StorybookSidebar)
 
   StorybookRegistry& m_storybookRegistry;
+  ValueTree& m_state;
   TreeView m_treeView;
   TreeViewStoryItem m_rootItem;
 };

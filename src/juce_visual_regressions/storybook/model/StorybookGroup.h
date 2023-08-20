@@ -17,8 +17,9 @@ public:
   using Child = std::variant<std::shared_ptr<StorybookGroup>,
                              std::shared_ptr<StorybookStory>>;
 
-  explicit StorybookGroup(std::string  mName);
+  explicit StorybookGroup(std::string mName);
 
+  std::optional<std::shared_ptr<StorybookStory>> getStoryById(int id);
   void addGroup(std::shared_ptr<StorybookGroup> group);
   void addStory(std::shared_ptr<StorybookStory> story);
 

@@ -14,7 +14,7 @@ using namespace juce;
 
 class StorybookWindow : public DocumentWindow {
 public:
-  StorybookWindow(StorybookRegistry& storybookRegistry);
+  StorybookWindow(StorybookRegistry& storybookRegistry, ValueTree& state);
 
   void closeButtonPressed() override;
 
