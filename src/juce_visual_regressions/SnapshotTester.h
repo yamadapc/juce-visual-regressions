@@ -19,7 +19,7 @@ class SnapshotTester {
 public:
   SnapshotTester() = default;
 
-  Snapshot takeSnapshot(juce::Component& component);
+  static Snapshot takeSnapshot(juce::Component& component);
 };
 
 } // namespace juce_visual_regressions
