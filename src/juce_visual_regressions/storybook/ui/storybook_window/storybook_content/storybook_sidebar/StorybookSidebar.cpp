@@ -12,6 +12,7 @@ StorybookSidebar::StorybookSidebar(StorybookRegistry& storybookRegistry,
       m_state(state),
       m_rootItem(m_storybookRegistry.getRootGroup(), state) {
   addAndMakeVisible(&m_treeView);
+  m_treeView.setIndentSize(10);
 
   m_treeView.setDefaultOpenness(true);
   m_treeView.setRootItem(&m_rootItem);

@@ -1,4 +1,4 @@
 build: FORCE
-	cmake --build ./build
+	conan install . --output-folder=build --build=missing
 
 FORCE:
