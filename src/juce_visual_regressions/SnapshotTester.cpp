@@ -24,24 +24,24 @@ Optional<File> getRootProjectDirectory(const File& file) {
 void matchesSnapshot(Component& component, std::string_view name) {
   auto rootDirectory =
     *getRootProjectDirectory(File::getCurrentWorkingDirectory());
-  auto image =
-    component.createComponentSnapshot(component.getBounds(), false, 1.0f);
-
-  // juce Image to file
-
   const File& filePath = rootDirectory.getChildFile(
-    juce::String::formatted("./test/visual-regression/current/%s.png", name));
+    String::formatted("./test/visual-regression/current/%s.png", name));
   filePath.getParentDirectory().createDirectory();
   filePath.deleteFile();
-  File file(filePath);
-  auto fileOutputStream = file.createOutputStream();
-  if(fileOutputStream == nullptr)
-    throw std::runtime_error("Could not create file output stream");
-  PNGImageFormat png;
-  png.writeImageToStream(image, *fileOutputStream);
+
+  {
+    auto image =
+      component.createComponentSnapshot(component.getBounds(), false, 1.0f);
+    File file(filePath);
+    auto fileOutputStream = file.createOutputStream();
+    if(fileOutputStream == nullptr)
+      throw std::runtime_error("Could not create file output stream");
+    PNGImageFormat png;
+    png.writeImageToStream(image, *fileOutputStream);
+  }
 
   const File& previousFilePath = rootDirectory.getChildFile(
-    juce::String::formatted("./test/visual-regression/stable/%s.png", name));
+    String::formatted("./test/visual-regression/stable/%s.png", name));
   previousFilePath.getParentDirectory().createDirectory();
   if(!previousFilePath.exists()) {
     filePath.moveFileTo(previousFilePath);
@@ -49,17 +49,36 @@ void matchesSnapshot(Component& component, std::string_view name) {
   }
 
   const File& diffFilePath = rootDirectory.getChildFile(
-    juce::String::formatted("./test/visual-regression/diff/%s.png", name));
+    String::formatted("./test/visual-regression/diff/%s.png", name));
   diffFilePath.getParentDirectory().createDirectory();
-  juce::ChildProcess diffProcess;
-  diffProcess.start("magick compare -metric AE -fuzz 5% \"" +
-                    previousFilePath.getFullPathName() + "\" \"" +
-                    filePath.getFullPathName() + "\" \"" +
-                    diffFilePath.getFullPathName() + "\"");
+  ChildProcess diffProcess;
+  StringArray command = {"magick",
+                         "compare",
+                         "-metric",
+                         "AE",
+                         "-fuzz",
+                         "5%",
+                         previousFilePath.getFullPathName(),
+                         filePath.getFullPathName(),
+                         diffFilePath.getFullPathName()};
+  Logger::writeToLog("Running - command=" + command.joinIntoString(" "));
+  diffProcess.start(command);
 
-  assert(diffProcess.waitForProcessToFinish(5000));
+  if(!diffProcess.waitForProcessToFinish(5000)) {
+    throw std::runtime_error("Could not run magick compare - TIMEOUT");
+  }
 
-  assert(diffProcess.getExitCode() == 0);
+  auto output = diffProcess.readAllProcessOutput();
+  Logger::writeToLog(
+    "Running - output:\n==================================================\n" +
+    output);
+  Logger::writeToLog("==================================================");
+  if(diffProcess.getExitCode() != 0) {
+    throw std::runtime_error("Could not run magick compare - ERROR");
+  }
+
+  diffFilePath.deleteFile();
+  filePath.deleteFile();
 }
 
 void testComponent(const std::function<void()>& test) {
@@ -69,8 +88,8 @@ void testComponent(const std::function<void()>& test) {
 
   test();
 
-  juce::DeletedAtShutdown::deleteAll();
-  juce::MessageManager::deleteInstance();
+  DeletedAtShutdown::deleteAll();
+  MessageManager::deleteInstance();
 }
 
 void runComponentSnapshotTest(std::string_view name,
