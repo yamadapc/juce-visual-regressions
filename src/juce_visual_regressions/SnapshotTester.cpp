@@ -52,7 +52,7 @@ void matchesSnapshot(Component& component, std::string_view name) {
     juce::String::formatted("./test/visual-regression/diff/%s.png", name));
   diffFilePath.getParentDirectory().createDirectory();
   juce::ChildProcess diffProcess;
-  diffProcess.start("magick compare -metric AE -fuzz 10% \"" +
+  diffProcess.start("magick compare -metric AE -fuzz 5% \"" +
                     previousFilePath.getFullPathName() + "\" \"" +
                     filePath.getFullPathName() + "\" \"" +
                     diffFilePath.getFullPathName() + "\"");
