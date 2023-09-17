@@ -6,8 +6,6 @@
 
 namespace juce_visual_regressions {
 
-StorybookRegistry StorybookRegistry::s_instance;
-
 StorybookRegistry::StorybookRegistry()
     : m_rootGroup(std::make_shared<StorybookGroup>("/")) {
 }
@@ -22,6 +20,8 @@ std::shared_ptr<StorybookGroup>& StorybookRegistry::getRootGroup() {
 }
 
 StorybookRegistry& StorybookRegistry::getInstance() {
+  static StorybookRegistry s_instance;
+  assert(s_instance.m_rootGroup != nullptr);
   return s_instance;
 }
 

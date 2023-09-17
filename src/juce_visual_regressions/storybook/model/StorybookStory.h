@@ -10,16 +10,16 @@ namespace juce_visual_regressions {
 
 class StorybookStory {
 public:
-  StorybookStory(std::string name, std::shared_ptr<juce::Component> component);
+  StorybookStory(std::string name, std::function<juce::Component*()> block);
 
   const int getId() const;
   const std::string& getName() const;
-  const std::shared_ptr<juce::Component>& getComponent() const;
+  const std::function<juce::Component*()>& getBlock() const;
 
 private:
   int m_id;
   std::string m_name;
-  std::shared_ptr<juce::Component> m_component;
+  std::function<juce::Component*()> m_block;
 };
 
 } // namespace juce_visual_regressions

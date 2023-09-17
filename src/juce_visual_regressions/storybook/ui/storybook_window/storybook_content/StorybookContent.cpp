@@ -43,7 +43,8 @@ void StorybookContent::valueTreePropertyChanged(
     StorybookRegistry::getInstance().getStoryById(selectedStoryId);
 
   if(maybeStory.has_value()) {
-    m_storyComponent = maybeStory.value()->getComponent();
+    m_storyComponent =
+      std::shared_ptr<Component>((maybeStory.value()->getBlock())());
     addAndMakeVisible(m_storyComponent.get());
     resized();
   }

@@ -23,7 +23,6 @@ public:
 
 private:
   std::shared_ptr<StorybookGroup> m_rootGroup;
-  static StorybookRegistry s_instance;
 };
 
 } // namespace juce_visual_regressions

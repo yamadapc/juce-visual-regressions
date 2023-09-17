@@ -12,10 +12,10 @@ static int getNextId() {
 }
 
 StorybookStory::StorybookStory(std::string name,
-                               std::shared_ptr<juce::Component> component)
+                               std::function<juce::Component*()> block)
     : m_id(getNextId()),
       m_name(name),
-      m_component(component) {
+      m_block(block) {
 }
 
 const int StorybookStory::getId() const {
@@ -26,8 +26,8 @@ const std::string& StorybookStory::getName() const {
   return m_name;
 }
 
-const std::shared_ptr<juce::Component>& StorybookStory::getComponent() const {
-  return m_component;
+const std::function<juce::Component*()>& StorybookStory::getBlock() const {
+  return m_block;
 }
 
 } // namespace juce_visual_regressions
