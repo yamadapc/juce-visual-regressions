@@ -4,6 +4,8 @@
 
 #include "TreeViewStoryItem.h"
 
+#include <utility>
+
 namespace juce_visual_regressions {
 
 TreeViewStoryItem::TreeViewStoryItem(StorybookGroup::Child value,
@@ -29,8 +31,52 @@ String TreeViewStoryItem::getUniqueName() const {
   }
 }
 
+class TreeViewLabel : public Label {
+public:
+  TreeViewLabel(StorybookGroup::Child value, ValueTree& state)
+      : m_value(std::move(value)),
+        m_state(state) {
+    setRepaintsOnMouseActivity(true);
+  }
+
+  bool isSelected() {
+    if(!std::holds_alternative<std::shared_ptr<StorybookStory>>(m_value)) {
+      return false;
+    }
+
+    auto story = std::get<std::shared_ptr<StorybookStory>>(m_value);
+    auto selectedStoryId =
+      static_cast<int>(m_state.getProperty("selectedStory", -1));
+    if(story->getId() != selectedStoryId) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void paint(Graphics& g) override {
+    auto bounds = getLocalBounds();
+    g.setColour(isSelected() ? Colours::white : Colour(23, 55, 83));
+    g.fillRect(bounds);
+    g.setColour(Colours::grey);
+    g.drawLine(bounds.getX(),
+               bounds.getBottom() - 1,
+               bounds.getRight(),
+               bounds.getBottom() - 1);
+    bounds.removeFromBottom(1);
+    bounds.removeFromLeft(10);
+    bounds.removeFromRight(10);
+    g.setColour(isSelected() ? Colours::black : Colours::white);
+    g.drawText(getText(), bounds, Justification::centredLeft);
+  }
+
+private:
+  StorybookGroup::Child m_value;
+  ValueTree& m_state;
+};
+
 std::unique_ptr<Component> TreeViewStoryItem::createItemComponent() {
-  auto label = std::make_unique<Label>();
+  auto label = std::make_unique<TreeViewLabel>(m_value, m_state);
   label->setText(getUniqueName(), dontSendNotification);
   label->setColour(Label::textColourId, Colours::black);
   return label;
@@ -48,6 +94,7 @@ void TreeViewStoryItem::itemSelectionChanged(bool isNowSelected) {
 
   auto story = std::get<std::shared_ptr<StorybookStory>>(m_value);
   m_state.setProperty("selectedStory", story->getId(), nullptr);
+  repaintItem();
 }
 
 bool TreeViewStoryItem::customComponentUsesTreeViewMouseHandler() const {
@@ -70,6 +117,10 @@ void TreeViewStoryItem::setupChildren() {
   for(auto& child : group->getChildren()) {
     addSubItem(new TreeViewStoryItem(child, m_state));
   }
+}
+
+int TreeViewStoryItem::getItemHeight() const {
+  return 40;
 }
 
 } // namespace juce_visual_regressions

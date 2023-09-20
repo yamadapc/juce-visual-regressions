@@ -16,11 +16,14 @@ public:
   TreeViewStoryItem(StorybookGroup::Child value, ValueTree& state);
 
   bool mightContainSubItems() override;
-  bool canBeSelected() const override;
+  [[nodiscard]] bool canBeSelected() const override;
   [[nodiscard]] String getUniqueName() const override;
   std::unique_ptr<Component> createItemComponent() override;
-  bool customComponentUsesTreeViewMouseHandler() const override;
-  void itemSelectionChanged(bool isNowSelected) override;
+  [[nodiscard]] bool customComponentUsesTreeViewMouseHandler() const override;
+
+    int getItemHeight() const override;
+
+    void itemSelectionChanged(bool isNowSelected) override;
   void itemOpennessChanged(bool isNowOpen) override;
 
 private:
