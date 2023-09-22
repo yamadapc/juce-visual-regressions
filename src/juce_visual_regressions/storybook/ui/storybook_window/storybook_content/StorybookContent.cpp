@@ -14,11 +14,25 @@ StorybookContent::StorybookContent(StorybookRegistry& storybookRegistry,
   m_state.addListener(this);
 }
 
+void StorybookContent::paint(juce::Graphics& g) {
+  auto bounds = getLocalBounds();
+  g.setColour(Colour(23, 55, 83));
+  g.fillRect(bounds);
+  bounds.removeFromLeft(200);
+
+  g.setColour(Colours::black);
+  auto path = Path();
+  path.addRoundedRectangle(bounds.reduced(20).toFloat(), 10);
+  g.fillPath(path);
+  DropShadow dropShadow(Colours::black.withAlpha(0.5f), 5, Point<int>(0, 0));
+  dropShadow.drawForPath(g, path);
+}
+
 void StorybookContent::resized() {
   auto bounds = getLocalBounds();
   m_storybookSidebar.setBounds(bounds.removeFromLeft(200));
   if(m_storyComponent != nullptr) {
-    m_storyComponent->setBounds(bounds);
+    m_storyComponent->setBounds(bounds.reduced(30));
   }
 }
 

@@ -18,6 +18,8 @@ public:
 
   void valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged,
                                 const Identifier& property) override;
+
+  void paint(Graphics& g) override;
   void resized() override;
 
 private:

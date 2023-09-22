@@ -1,3 +1,4 @@
+#include <cassert>
 #include "SnapshotTester.h"
 
 namespace juce_visual_regressions {
