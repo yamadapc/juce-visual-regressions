@@ -15,64 +15,18 @@ using namespace juce;
 
 class StorybookStoryFrame : public Component, public ValueTree::Listener {
 public:
-  explicit StorybookStoryFrame(ValueTree& state)
-      : m_state(state) {
-    m_state.addListener(this);
-  }
+  explicit StorybookStoryFrame(ValueTree& state);
 
-  ~StorybookStoryFrame() override {
-    m_state.removeListener(this);
-  }
+  ~StorybookStoryFrame() override;
 
-  void paint(Graphics& g) override {
-    auto bounds = getLocalBounds();
-
-    g.setColour(Colours::black);
-    auto path = Path();
-    path.addRoundedRectangle(bounds.reduced(20).toFloat(), 10);
-    g.fillPath(path);
-    DropShadow dropShadow(Colours::black.withAlpha(0.5f), 5, Point<int>(0, 0));
-    dropShadow.drawForPath(g, path);
-  }
-
-  void resized() override {
-    if(m_storyComponent != nullptr) {
-      m_storyComponent->setBounds(getLocalBounds().reduced(30));
-    }
-  }
+  void paint(Graphics& g) override;
+  void resized() override;
 
   void valueTreePropertyChanged(ValueTree&,
-                                const Identifier& property) override {
-    if(property != Identifier("selectedStory")) {
-      return;
-    }
-
-    onStoryChanged();
-  }
+                                const Identifier& property) override;
 
 private:
-  void onStoryChanged() {
-    auto property = Identifier("selectedStory");
-
-    juce::Logger::writeToLog("Selected story changed: " + property.toString());
-    if(m_storyComponent != nullptr) {
-      juce::Logger::writeToLog("Removing current story");
-      removeChildComponent(m_storyComponent.get());
-      resized();
-    }
-
-    juce::Logger::writeToLog("Updating to new story");
-    auto selectedStoryId = static_cast<int>(m_state.getProperty(property));
-    auto maybeStory =
-      StorybookRegistry::getInstance().getStoryById(selectedStoryId);
-
-    if(maybeStory.has_value()) {
-      m_story = maybeStory.value();
-      m_storyComponent = std::shared_ptr<Component>((m_story->getBlock())());
-      addAndMakeVisible(m_storyComponent.get());
-      resized();
-    }
-  }
+  void onStoryChanged();
 
   ValueTree& m_state;
   std::shared_ptr<Component> m_storyComponent = nullptr;
