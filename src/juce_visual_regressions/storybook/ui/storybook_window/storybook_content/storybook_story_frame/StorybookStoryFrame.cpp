@@ -53,7 +53,8 @@ void StorybookStoryFrame::onStoryChanged() {
   }
 
   auto selectedStoryId = static_cast<int>(m_state.getProperty("selectedStory"));
-  juce::Logger::writeToLog("Updating to new story id=" + String(selectedStoryId));
+  juce::Logger::writeToLog("Updating to new story id=" +
+                           String(selectedStoryId));
   auto maybeStory =
     StorybookRegistry::getInstance().getStoryById(selectedStoryId);
 
@@ -62,7 +63,7 @@ void StorybookStoryFrame::onStoryChanged() {
   }
 
   m_story = maybeStory.value();
-  m_storyComponent = std::shared_ptr<Component>(m_story->createComponent ());
+  m_storyComponent = std::shared_ptr<Component>((m_story->getBlock())());
   addAndMakeVisible(m_storyComponent.get());
   resized();
 }

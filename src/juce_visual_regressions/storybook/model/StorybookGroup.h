@@ -8,7 +8,7 @@
 #include <variant>
 #include <vector>
 
-#include "juce_visual_regressions/storybook/model/storybook_story/StorybookStory.h"
+#include "StorybookStory.h"
 
 namespace juce_visual_regressions {
 

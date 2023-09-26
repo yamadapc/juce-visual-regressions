@@ -7,7 +7,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "../../../../model/StorybookRegistry.h"
-#include "juce_visual_regressions/storybook/model/storybook_story/StorybookStory.h"
+#include "../../../../model/StorybookStory.h"
 
 namespace juce_visual_regressions {
 
