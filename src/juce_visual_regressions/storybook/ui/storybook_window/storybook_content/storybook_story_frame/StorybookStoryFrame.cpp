@@ -45,17 +45,15 @@ void StorybookStoryFrame::valueTreePropertyChanged(ValueTree&,
 }
 
 void StorybookStoryFrame::onStoryChanged() {
-  auto property = Identifier("selectedStory");
-
-  juce::Logger::writeToLog("Selected story changed: " + property.toString());
+  juce::Logger::writeToLog("Selected story changed");
   if(m_storyComponent != nullptr) {
     juce::Logger::writeToLog("Removing current story");
     removeChildComponent(m_storyComponent.get());
     resized();
   }
 
-  juce::Logger::writeToLog("Updating to new story");
-  auto selectedStoryId = static_cast<int>(m_state.getProperty(property));
+  auto selectedStoryId = static_cast<int>(m_state.getProperty("selectedStory"));
+  juce::Logger::writeToLog("Updating to new story id=" + String(selectedStoryId));
   auto maybeStory =
     StorybookRegistry::getInstance().getStoryById(selectedStoryId);
 
@@ -64,7 +62,7 @@ void StorybookStoryFrame::onStoryChanged() {
   }
 
   m_story = maybeStory.value();
-  m_storyComponent = std::shared_ptr<Component>((m_story->getBlock())());
+  m_storyComponent = std::shared_ptr<Component>(m_story->createComponent ());
   addAndMakeVisible(m_storyComponent.get());
   resized();
 }

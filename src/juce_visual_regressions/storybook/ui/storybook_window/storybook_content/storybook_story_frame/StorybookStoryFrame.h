@@ -7,7 +7,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "../../../../model/StorybookRegistry.h"
-#include "../../../../model/StorybookStory.h"
+#include "juce_visual_regressions/storybook/model/storybook_story/StorybookStory.h"
 
 namespace juce_visual_regressions {
 
@@ -30,7 +30,7 @@ private:
 
   ValueTree& m_state;
   std::shared_ptr<Component> m_storyComponent = nullptr;
-  std::shared_ptr<StorybookStory> m_story = nullptr;
+  StorybookStoryRef m_story = nullptr;
 };
 
 } // namespace juce_visual_regressions

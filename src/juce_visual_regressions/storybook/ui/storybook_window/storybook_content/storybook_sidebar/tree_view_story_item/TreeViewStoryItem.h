@@ -11,7 +11,7 @@ namespace juce_visual_regressions {
 
 using namespace juce;
 
-class TreeViewStoryItem : public TreeViewItem {
+class TreeViewStoryItem : public TreeViewItem, public ValueTree::Listener {
 public:
   TreeViewStoryItem(StorybookGroup::Child value, ValueTree& state);
 
@@ -21,9 +21,8 @@ public:
   std::unique_ptr<Component> createItemComponent() override;
   [[nodiscard]] bool customComponentUsesTreeViewMouseHandler() const override;
 
-    int getItemHeight() const override;
-
-    void itemSelectionChanged(bool isNowSelected) override;
+  [[nodiscard]] int getItemHeight() const override;
+  void itemSelectionChanged(bool isNowSelected) override;
   void itemOpennessChanged(bool isNowOpen) override;
 
 private:
