@@ -8,20 +8,23 @@
 #include <variant>
 #include <vector>
 
-#include "StorybookStory.h"
+#include "juce_visual_regressions/storybook/model/storybook_story/StorybookStory.h"
 
 namespace juce_visual_regressions {
 
+class StorybookGroup;
+using StorybookStoryRef = std::shared_ptr<StorybookStory>;
+using StorybookGroupRef = std::shared_ptr<StorybookGroup>;
+
 class StorybookGroup {
 public:
-  using Child = std::variant<std::shared_ptr<StorybookGroup>,
-                             std::shared_ptr<StorybookStory>>;
+  using Child = std::variant<StorybookGroupRef, StorybookStoryRef>;
 
   explicit StorybookGroup(std::string mName);
 
-  std::optional<std::shared_ptr<StorybookStory>> getStoryById(int id);
-  void addGroup(std::shared_ptr<StorybookGroup> group);
-  void addStory(std::shared_ptr<StorybookStory> story);
+  std::optional<StorybookStoryRef> getStoryById(int id);
+  void addGroup(StorybookGroupRef group);
+  void addStory(StorybookStoryRef story);
 
   const std::string& getName();
   const std::vector<Child>& getChildren();

@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "StorybookGroup.h"
-#include "StorybookStory.h"
+#include "juce_visual_regressions/storybook/model/storybook_story/StorybookStory.h"
 
 namespace juce_visual_regressions {
 
@@ -15,14 +15,14 @@ class StorybookRegistry {
 public:
   StorybookRegistry();
 
-  std::optional<std::shared_ptr<StorybookStory>> getStoryById(int id);
-  std::shared_ptr<StorybookGroup>& getRootGroup();
+  std::optional<StorybookStoryRef> getStoryById(int id);
+  StorybookGroupRef& getRootGroup();
   void shutdown();
 
   static StorybookRegistry& getInstance();
 
 private:
-  std::shared_ptr<StorybookGroup> m_rootGroup;
+  StorybookGroupRef m_rootGroup;
 };
 
 } // namespace juce_visual_regressions

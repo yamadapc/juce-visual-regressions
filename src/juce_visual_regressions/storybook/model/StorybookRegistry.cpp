@@ -11,12 +11,12 @@ StorybookRegistry::StorybookRegistry()
     : m_rootGroup(std::make_shared<StorybookGroup>("/")) {
 }
 
-std::optional<std::shared_ptr<StorybookStory>>
+std::optional<StorybookStoryRef>
 StorybookRegistry::getStoryById(int id) {
   return m_rootGroup->getStoryById(id);
 }
 
-std::shared_ptr<StorybookGroup>& StorybookRegistry::getRootGroup() {
+StorybookGroupRef& StorybookRegistry::getRootGroup() {
   return m_rootGroup;
 }
 
