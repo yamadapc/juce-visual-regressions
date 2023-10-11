@@ -121,3 +121,5 @@ renders your `InputMeter` component when clicked.
 # License
 
 MIT license - 2023 Pedro Tacla Yamada
+
+JUCE and imagemagick have their own licenses.
