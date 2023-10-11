@@ -75,7 +75,48 @@ To update the stored snapshot, delete the current snapshot.
 
 ## Storybook Usage
 
-_TODO_
+### CMake set-up
+To setup the Storybook app target, use the exported CMake function, this section assumes you have a `MyPlugin` JUCE
+plugin setup and that `PLUGIN_INCLUDES`, `PLUGIN_SOURCES` and `PLUGIN_DEFINITIONS` are set and relevant.
+
+```cmake
+# ==============================================================================
+# Storybook
+# ==============================================================================
+juce_vr_add_storybook(MyPluginStorybook)
+target_sources(MyPluginStorybook PRIVATE ${PLUGIN_SOURCES})
+get_target_property(juce_library_code MyPlugin JUCE_GENERATED_SOURCES_DIRECTORY)
+message(STATUS "juce_library_code: ${juce_library_code}")
+target_include_directories(MyPluginStorybook PRIVATE ${PLUGIN_INCLUDES} ${juce_library_code})
+target_link_libraries(
+  MyPluginStorybook PRIVATE
+  juce::juce_audio_utils
+  juce_visual_regressions
+  # focusrite-e2e::focusrite-e2e
+)
+target_compile_definitions(MyPluginStorybook PRIVATE ${PLUGIN_DEFINITIONS})
+```
+
+### Source code usage
+
+The storybook target will set `JUCE_VR_IS_STORYBOOK` to 1, so you can use that to conditionally include some stories:
+```c++
+class InputMuter : public Component {
+    // ...
+};
+
+#if JUCE_VR_IS_STORYBOOK
+#include <juce_visual_regressions/juce_visual_regressions.h>
+
+STORY ("InputMeter")
+{
+    return new InputMeter ();
+}
+#endif
+```
+
+This API is subject to change. By doing this, when running the storybook you'll see a menu item "InputMeter" that
+renders your `InputMeter` component when clicked.
 
 # License
 
