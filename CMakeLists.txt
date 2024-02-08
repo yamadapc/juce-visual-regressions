@@ -30,6 +30,16 @@ set_target_properties(
   PROPERTIES
   JUCE_GENERATED_SOURCES_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/generated"
 )
+target_link_options(
+  StoryBook
+  PRIVATE
+  -Wl,-weak_reference_mismatches,weak
+)
+target_compile_definitions(
+  StoryBook
+  PRIVATE
+  JUCE_VR_IS_STORYBOOK=1
+)
 juce_generate_juce_header(StoryBook)
 target_sources(
   StoryBook
@@ -40,6 +50,11 @@ target_sources(
 target_link_libraries(
   StoryBook
   PRIVATE
+  juce::juce_gui_basics
+  PUBLIC
+  juce::juce_recommended_config_flags
+  juce::juce_recommended_lto_flags
+  juce::juce_recommended_warning_flags
   ${PUBLIC_DEPENDENCIES}
 )
 
