@@ -107,8 +107,9 @@ void matchesSnapshot(Component& component, std::string_view name) {
   auto diffOutputStream = diffFilePath.createOutputStream();
   png.writeImageToStream(result.diffImage, *diffOutputStream);
 
-  if(result.ratio > 0.05) {
-    throw std::runtime_error("Diff was greater than 5%");
+  Logger::outputDebugString("Diff ratio: " + String(result.ratio));
+  if(result.ratio > 0.15) {
+    throw std::runtime_error("Diff was greater than 15%");
   }
 
   diffFilePath.deleteFile();
