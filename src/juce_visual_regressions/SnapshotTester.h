@@ -1,6 +1,8 @@
 #pragma once
 
+#include <functional>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <memory>
 
 namespace juce_visual_regressions {
 
@@ -38,11 +40,9 @@ void testComponent(const std::function<void()>& test);
 /**
  * Run component snapshot test with a name and a closure that returns a
  * component pointer.
- *
- * Cleans-up the component after running.
  */
 void runComponentSnapshotTest(std::string_view name,
-                              std::function<std::unique_ptr<Component>> test);
+                              std::function<std::unique_ptr<Component>()> test);
 
 /**
  * A component snapshot image.

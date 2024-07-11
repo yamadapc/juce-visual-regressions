@@ -126,8 +126,9 @@ void testComponent(const std::function<void()>& test) {
   MessageManager::deleteInstance();
 }
 
-void runComponentSnapshotTest(std::string_view name,
-                              std::function<std::unique_ptr<Component>> test) {
+void runComponentSnapshotTest(
+  std::string_view name,
+  std::function<std::unique_ptr<Component>()> test) {
   testComponent([&]() {
     auto component = test();
     matchesSnapshot(*component, name);
