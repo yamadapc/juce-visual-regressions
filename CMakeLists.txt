@@ -17,8 +17,6 @@ file(
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   find_package(JUCE GLOBAL)
   
-  add_definitions(-DJUCE_DISPLAY_SPLASH_SCREEN=0)
-  
   juce_add_gui_app(
     StoryBook
     PRODUCT_NAME "BF StoryBook"
