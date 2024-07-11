@@ -1,5 +1,5 @@
-#include <cassert>
 #include "SnapshotTester.h"
+#include <cassert>
 
 namespace juce_visual_regressions {
 
@@ -22,6 +22,40 @@ Optional<File> getRootProjectDirectory(const File& file) {
   return nullopt;
 }
 
+struct ImageComparisonResult {
+  double ratio;
+  Image diffImage;
+};
+
+ImageComparisonResult compareImages(const Image& imageLeft,
+                                    const Image& imageRight) {
+  auto height = std::max(imageLeft.getHeight(), imageRight.getHeight());
+  auto width = std::max(imageLeft.getWidth(), imageRight.getWidth());
+
+  auto totalPixels = height * width;
+  auto matchingPixels = 0;
+
+  auto diffImage = Image(Image::PixelFormat::RGB, width, height, true);
+
+  for(auto y = 0; y < height; y += 1) {
+    for(auto x = 0; x < width; x += 1) {
+      auto pixelLeft = imageLeft.getPixelAt(x, y);
+      auto pixelRight = imageRight.getPixelAt(x, y);
+
+      if(pixelLeft != pixelRight) {
+        matchingPixels += 1;
+        diffImage.setPixelAt(x, y, Colours::red);
+      } else {
+        diffImage.setPixelAt(x, y, pixelLeft.withAlpha(0.5f));
+      }
+    }
+  }
+
+  auto ratio =
+    static_cast<double>(matchingPixels) / static_cast<double>(totalPixels);
+  return ImageComparisonResult{.ratio = ratio, .diffImage = diffImage};
+}
+
 void matchesSnapshot(Component& component, std::string_view name) {
   auto rootDirectory =
     *getRootProjectDirectory(File::getCurrentWorkingDirectory());
@@ -29,16 +63,16 @@ void matchesSnapshot(Component& component, std::string_view name) {
     String::formatted("./test/visual-regression/current/%s.png", name));
   filePath.getParentDirectory().createDirectory();
   filePath.deleteFile();
+  PNGImageFormat png;
 
+  auto currentImage =
+    component.createComponentSnapshot(component.getBounds(), false, 1.0f);
   {
-    auto image =
-      component.createComponentSnapshot(component.getBounds(), false, 1.0f);
     File file(filePath);
     auto fileOutputStream = file.createOutputStream();
     if(fileOutputStream == nullptr)
       throw std::runtime_error("Could not create file output stream");
-    PNGImageFormat png;
-    png.writeImageToStream(image, *fileOutputStream);
+    png.writeImageToStream(currentImage, *fileOutputStream);
   }
 
   const File& previousFilePath = rootDirectory.getChildFile(
@@ -52,30 +86,15 @@ void matchesSnapshot(Component& component, std::string_view name) {
   const File& diffFilePath = rootDirectory.getChildFile(
     String::formatted("./test/visual-regression/diff/%s.png", name));
   diffFilePath.getParentDirectory().createDirectory();
-  ChildProcess diffProcess;
-  StringArray command = {"magick",
-                         "compare",
-                         "-metric",
-                         "AE",
-                         "-fuzz",
-                         "5%",
-                         previousFilePath.getFullPathName(),
-                         filePath.getFullPathName(),
-                         diffFilePath.getFullPathName()};
-  Logger::writeToLog("Running - command=" + command.joinIntoString(" "));
-  diffProcess.start(command);
 
-  if(!diffProcess.waitForProcessToFinish(5000)) {
-    throw std::runtime_error("Could not run magick compare - TIMEOUT");
-  }
+  const auto stableImage = ImageFileFormat::loadFrom(previousFilePath);
 
-  auto output = diffProcess.readAllProcessOutput();
-  Logger::writeToLog(
-    "Running - output:\n==================================================\n" +
-    output);
-  Logger::writeToLog("==================================================");
-  if(diffProcess.getExitCode() != 0) {
-    throw std::runtime_error("Could not run magick compare - ERROR");
+  auto result = compareImages(stableImage, currentImage);
+  auto diffOutputStream = diffFilePath.createOutputStream();
+  png.writeImageToStream(result.diffImage, *diffOutputStream);
+
+  if(result.ratio > 0.05) {
+    throw std::runtime_error("Diff was greater than 5%");
   }
 
   diffFilePath.deleteFile();

@@ -14,7 +14,6 @@
 
 * JUCE
 * C++ compiler
-* `imagemagick`
 
 ## Rationale
 
@@ -39,7 +38,7 @@ With Catch2 as an example.
   - $PROJECT_ROOT is found by looking for .git, in the future this can be configurable
 * Compare the snapshot with the snapshot at `$PROJECT_ROOT/test/visual-regressions/stable/$NAME.png` if it exists
   - Write the diff to `$PROJECT_ROOT/test/visual-regressions/diff/$NAME.png`
-  - This uses imagemagick, with a 5% pixel diff threshold and a 5s timeout
+  - This uses a 5% pixel diff threshold
 * Fail the test (throw an exception) if the diff command fails
 * Delete the component and update the stored snapshot
 
@@ -122,4 +121,4 @@ renders your `InputMeter` component when clicked.
 
 MIT license - 2023 Pedro Tacla Yamada
 
-JUCE and imagemagick have their own licenses.
+JUCE has its own license.
