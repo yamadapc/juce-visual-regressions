@@ -12,8 +12,6 @@ using namespace juce;
 
 class StorybookLookAndFeel : LookAndFeel_V4 {
 public:
-
-
 private:
 };
 

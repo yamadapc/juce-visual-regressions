@@ -8,7 +8,11 @@ constexpr std::array projectMarkerFiles = {
   ".git",
 };
 
-Optional<File> getRootProjectDirectory(const File& file) {
+/**
+ * Search for the project root directory given a file-path by walking up the
+ * directory tree looking for either a .clang-format or .git file/directory.
+ */
+static Optional<File> getRootProjectDirectory(const File& file) {
   File current = file;
   while(current != current.getParentDirectory()) {
     for(auto& targetFile : projectMarkerFiles) {
@@ -22,11 +26,21 @@ Optional<File> getRootProjectDirectory(const File& file) {
   return nullopt;
 }
 
+/**
+ * The result of comparing two images pixel by pixel.
+ *
+ * Ratio is the ratio of differing pixels.
+ *
+ * diffImage is an image with differing pixels highlighted in red.
+ */
 struct ImageComparisonResult {
   double ratio;
   Image diffImage;
 };
 
+/**
+ * Compare two images pixel by pixel and return the `ImageComparisonResult`.
+ */
 static ImageComparisonResult compareImages(const Image& imageLeft,
                                            const Image& imageRight) {
   const auto height = std::max(imageLeft.getHeight(), imageRight.getHeight());
@@ -113,11 +127,10 @@ void testComponent(const std::function<void()>& test) {
 }
 
 void runComponentSnapshotTest(std::string_view name,
-                              std::function<Component*()> test) {
+                              std::function<std::unique_ptr<Component>> test) {
   testComponent([&]() {
     auto component = test();
     matchesSnapshot(*component, name);
-    delete component;
   });
 }
 
