@@ -27,12 +27,12 @@ struct ImageComparisonResult {
   Image diffImage;
 };
 
-ImageComparisonResult compareImages(const Image& imageLeft,
-                                    const Image& imageRight) {
-  auto height = std::max(imageLeft.getHeight(), imageRight.getHeight());
-  auto width = std::max(imageLeft.getWidth(), imageRight.getWidth());
+static ImageComparisonResult compareImages(const Image& imageLeft,
+                                           const Image& imageRight) {
+  const auto height = std::max(imageLeft.getHeight(), imageRight.getHeight());
+  const auto width = std::max(imageLeft.getWidth(), imageRight.getWidth());
 
-  auto totalPixels = height * width;
+  const auto totalPixels = height * width;
   auto matchingPixels = 0;
 
   auto diffImage = Image(Image::PixelFormat::RGB, width, height, true);
@@ -51,9 +51,9 @@ ImageComparisonResult compareImages(const Image& imageLeft,
     }
   }
 
-  auto ratio =
-    static_cast<double>(matchingPixels) / static_cast<double>(totalPixels);
-  return ImageComparisonResult{.ratio = ratio, .diffImage = diffImage};
+  return ImageComparisonResult{.ratio = static_cast<double>(matchingPixels) /
+                                        static_cast<double>(totalPixels),
+                               .diffImage = diffImage};
 }
 
 void matchesSnapshot(Component& component, std::string_view name) {
